@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>We zijn zo terug — Onderhoud</title>
+  <meta name="description" content="Website wordt momenteel onderhouden. We zijn binnenkort terug." />
+  <!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="https://lh3.googleusercontent.com/a-/ALV-UjU76LJPAF89LMCl2YRAXLvuk2wsL-YT-sKhKzrAfF7a-ef5CLI=s265-w265-h265">
+
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa6b2;
+      --accent:#60a5fa;
+      --accent-2:#7c3aed;
+      --glass: rgba(255,255,255,0.04);
+      --radius:14px;
+      --max-w:900px;
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(96,165,250,0.06), transparent 8%),
+                  radial-gradient(800px 400px at 90% 90%, rgba(124,58,237,0.05), transparent 8%),
+                  var(--bg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .card{
+      width:100%;
+      max-width:var(--max-w);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:32px;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+      align-items:center;
+    }
+    @media (max-width:880px){.card{grid-template-columns:1fr; padding:22px}}
+    .left{padding-right:10px}
+    .eyebrow{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      background:var(--glass);
+      padding:6px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:14px;
+      width:max-content;
+    }
+    h1{margin:0 0 10px 0; font-size:30px; line-height:1.02; letter-spacing:-0.02em;}
+    p.lead{margin:0 0 18px 0; color:var(--muted);}
+    .countdown{
+      display:flex;
+      gap:10px;
+      margin-top:6px;
+      margin-bottom:18px;
+    }
+    .countdown > div{
+      background:rgba(255,255,255,0.03);
+      padding:10px 12px;
+      border-radius:10px;
+      min-width:64px;
+      text-align:center;
+    }
+    .count-value{font-weight:700; font-size:18px}
+    .count-label{font-size:11px; color:var(--muted)}
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      border-radius:10px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    form{display:flex; flex-direction:column; gap:10px}
+    input[type="email"]{padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit}
+    button{padding:10px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:600; background:linear-gradient(90deg,var(--accent), var(--accent-2)); color:white}
+    .muted{color:var(--muted); font-size:13px}
+    .logo{display:flex; gap:12px; align-items:center}
+    .logo .brand{font-weight:700}
+    .illustration{display:flex; align-items:center; justify-content:center}
+    .meta{margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .meta a{color:var(--muted); text-decoration:none; font-size:13px}
+    .gear{width:120px; height:120px; transform-origin:center; animation:spin 6s linear infinite}
+    @keyframes spin{from{transform:rotate(0)} to{transform:rotate(360deg)}}
+    .sr-only{position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap}
+
+
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="title">
+    <section class="left">
+      <div class="logo">
+  <img 
+    src="https://lh3.googleusercontent.com/a-/ALV-UjU76LJPAF89LMCl2YRAXLvuk2wsL-YT-sKhKzrAfF7a-ef5CLI=s265-w265-h265" 
+    alt="FoxNetwork logo" 
+    width="40" 
+    height="40" 
+    style="border-radius:6px;"
+  />
+  <div>
+    <div class="brand">FoxNetwork</div>
+    <div class="muted" style="font-size:13px">We upgraden uw hostingprovider om onze website sneller en gemakkelijker te navigeren.</div>
+  </div>
+</div>
+
+
+      <div style="margin-top:18px">
+        <span class="eyebrow">🚧 Onderhoud</span>
+        <h1 id="title">We zijn zo terug - om dingen te verbeteren</h1>
+        <p class="lead">We voeren gepland onderhoud uit om de prestaties te verbeteren en nieuwe functies toe te voegen. Bedankt voor uw geduld.</p>
+
+        <div id="countdownWrap" aria-hidden="false">
+          <div class="countdown" id="countdown">
+            <div><div class="count-value" id="days">--</div><div class="count-label">Dagen</div></div>
+            <div><div class="count-value" id="hours">--</div><div class="count-label">Uren</div></div>
+            <div><div class="count-value" id="minutes">--</div><div class="count-label">Minuten</div></div>
+            <div><div class="count-value" id="seconds">--</div><div class="count-label">Seconden</div></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top:18px">Heeft u dringend hulp nodig? E-mail <a href="mailto:info@foxnetwork.be">info@foxnetwork.be</a></p>
+
+      <!--<footer style="margin-top:18px" class="muted">If you control this site: serve this file as the 503 response and set <code>Retry-After</code> header.</footer>-->
+    </section>
+
+    <aside class="panel" aria-labelledby="panelTitle">
+      <h2 id="panelTitle" style="margin-top:0; margin-bottom:6px">Ontvang een melding</h2>
+      <p class="muted">Voer uw e-mailadres in, dan sturen wij u een melding zodra de site weer online is.</p>
+
+      <form id="notifyForm" aria-describedby="notifyHelp">
+        <label for="email" class="sr-only">Email address</label>
+        <input id="email" name="email" type="email" placeholder="your@email.com" required aria-required="true">
+        <button type="submit">Notify me</button>
+      </form>
+      <div id="notifyHelp" class="muted" style="margin-top:8px">Wil je als eerste weten wanneer we terug zijn? Voer je e-mailadres in: een snelle melding, geen spam.</div>
+
+      <!--<div style="margin-top:18px; display:flex; gap:10px; align-items:center">
+        <a href="#" aria-label="Twitter link" class="muted">Twitter</a>
+        <a href="#" aria-label="Status link" class="muted">Status</a>
+        <a href="#" aria-label="Contact link" class="muted">Contact</a>
+      </div>-->
+
+      <div style="margin-top:18px; display:flex; justify-content:center" class="illustration" aria-hidden="true">
+        <svg class="gear" viewBox="0 0 64 64" width="120" height="120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 24a8 8 0 100 16 8 8 0 000-16z" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
+          <g stroke="rgba(255,255,255,0.08)" stroke-width="2">
+            <path d="M54 34v-4l4-2-4-6-4 1-2-4h-8l-2 4-4-1-4 6 4 2v4l-4 2 4 6 4-1 2 4h8l2-4 4 1 4-6-4-2z"/>
+          </g>
+        </svg>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // Countdown: 21 Sept 2025 at 20:00 UTC
+    const maintenanceEnd = new Date(Date.UTC(2026, 03, 01, 0, 0, 0));
+    function pad(n){return String(n).padStart(2,'0')}
+    function updateCountdown(){
+      const now = new Date();
+      let diff = Math.max(0, maintenanceEnd - now);
+      const s = Math.floor(diff/1000) % 60;
+      const m = Math.floor(diff/1000/60) % 60;
+      const h = Math.floor(diff/1000/60/60) % 24;
+      const d = Math.floor(diff/1000/60/60/24);
+      document.getElementById('days').textContent = pad(d);
+      document.getElementById('hours').textContent = pad(h);
+      document.getElementById('minutes').textContent = pad(m);
+      document.getElementById('seconds').textContent = pad(s);
+      if(diff <= 0){
+        document.getElementById('countdown').innerHTML = '<div class="muted">Maintenance complete — check the site.</div>';
+      }
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Send email to Discord webhook
+    document.getElementById('notifyForm').addEventListener('submit', async (e) =>{
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      if(!email){ alert('Please enter a valid email'); return; }
+
+      const webhookUrl = 'https://discord.com/api/webhooks/1301189616241610814/R8hRiJIxmiRGX3P-QJ8vmGRQBYk9sOoHVIrMHZHQHDBUjCBRAQb4h1CiBZ8bui50fyH2';
+
+      try {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: `📧 New maintenance notification request: ${email}` })
+        });
+        alert('Thanks! We received your email and sent a notification to Discord.');
+        e.target.reset();
+      } catch (err) {
+        console.error(err);
+        alert('Oops! Something went wrong.');
+      }
+    });
+
+    // Accessibility: focus title
+    document.getElementById('title').setAttribute('tabindex','-1');
+    document.getElementById('title').focus();
+  </script>
+</body>
+</html>
