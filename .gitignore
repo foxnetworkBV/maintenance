@@ -1,0 +1,6 @@
+# Sensitive configuration and dependencies
+notify.php
+server.js
+node_modules/
+package-lock.json
+.env
