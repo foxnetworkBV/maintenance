@@ -9,7 +9,7 @@ const app = express();
 const PORT = 1029;
 
 // Your secret webhook URL (keep this file private!)
-const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || 'https://discord.com/api/webhooks/1301189616241610814/R8hRiJIxmiRGX3P-QJ8vmGRQBYk9sOoHVIrMHZHQHDBUjCBRAQb4h1CiBZ8bui50fyH2';
+const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 // Middleware
 app.use(express.json());
