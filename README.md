@@ -39,7 +39,20 @@ A secure maintenance page with email notifications sent to Discord.
      $env:DISCORD_BOT_TOKEN="your_token"
      ```
 
-3. Run the bot:
+3. Set `DISCORD_APP_ID` to your bot application ID so slash commands can be registered:
+
+   - macOS / Linux:
+     ```bash
+     export DISCORD_APP_ID="your_app_id"
+     ```
+   - Windows PowerShell:
+     ```powershell
+     $env:DISCORD_APP_ID="your_app_id"
+     ```
+
+4. (Optional) For faster command updates, set `DISCORD_GUILD_ID` to the guild ID where the bot is installed.
+
+5. Run the bot:
    ```bash
    npm run start-bot
    ```
@@ -49,6 +62,7 @@ A secure maintenance page with email notifications sent to Discord.
    - `!status 75` — update progress percentage
    - `!step 2 current Bezig` — set step 2 as current with a detail message
    - `!label Ontwikkelingsstatus` — change the status label
+   - `!botstatus Website onderhoud` — change the bot status/presence
    - `!show` — display the current site status
    - `!reset` — restore the default statuses
 
