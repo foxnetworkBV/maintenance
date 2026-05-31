@@ -1,9 +1,9 @@
 // Simple backend server to protect webhook URL
 // Run with: node server.js
 
-require('dotenv').config();
-const express = require('express');
 const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+const express = require('express');
 const { startBot } = require('./discord-bot');
 const app = express();
 const PORT = 1029;
@@ -46,6 +46,7 @@ app.post('/api/notify', async (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
+  console.log('Starting Discord bot from server.js...');
 });
 
 // Start Discord bot if configured

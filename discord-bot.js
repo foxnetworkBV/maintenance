@@ -1,7 +1,7 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const { Client, GatewayIntentBits, PermissionsBitField, Partials, REST, Routes, SlashCommandBuilder, InteractionType, ActivityType } = require('discord.js');
 const fs = require('fs');
-const path = require('path');
 
 const STATUS_FILE = path.resolve(__dirname, 'status.json');
 const BOT_PREFIX = '!';
@@ -122,6 +122,7 @@ async function registerSlashCommands(token) {
 }
 
 async function startBot() {
+  console.log('Discord bot startup invoked.');
   const token = process.env.DISCORD_BOT_TOKEN;
   if (!token) {
     console.log('DISCORD_BOT_TOKEN is not configured. Discord bot will not start.');
