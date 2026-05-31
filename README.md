@@ -28,7 +28,7 @@ A secure maintenance page with email notifications sent to Discord.
 ## Discord Bot (Optional)
 
 1. Create a Discord bot application and copy its token.
-2. Set the `DISCORD_BOT_TOKEN` environment variable:
+2. Set the `DISCORD_BOT_TOKEN` environment variable, or put values in a `.env` file.
 
    - macOS / Linux:
      ```bash
@@ -37,6 +37,14 @@ A secure maintenance page with email notifications sent to Discord.
    - Windows PowerShell:
      ```powershell
      $env:DISCORD_BOT_TOKEN="your_token"
+     ```
+
+   - Or add to `.env`:
+     ```env
+     DISCORD_BOT_TOKEN=your_token
+     DISCORD_APP_ID=your_app_id
+     DISCORD_GUILD_ID=your_guild_id
+     DISCORD_WEBHOOK_URL=your_webhook_url
      ```
 
 3. Set `DISCORD_APP_ID` to your bot application ID so slash commands can be registered:

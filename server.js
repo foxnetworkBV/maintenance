@@ -1,6 +1,7 @@
 // Simple backend server to protect webhook URL
 // Run with: node server.js
 
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const { startBot } = require('./discord-bot');
@@ -8,7 +9,7 @@ const app = express();
 const PORT = 1029;
 
 // Your secret webhook URL (keep this file private!)
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1301189616241610814/R8hRiJIxmiRGX3P-QJ8vmGRQBYk9sOoHVIrMHZHQHDBUjCBRAQb4h1CiBZ8bui50fyH2';
+const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || 'https://discord.com/api/webhooks/1301189616241610814/R8hRiJIxmiRGX3P-QJ8vmGRQBYk9sOoHVIrMHZHQHDBUjCBRAQb4h1CiBZ8bui50fyH2';
 
 // Middleware
 app.use(express.json());
