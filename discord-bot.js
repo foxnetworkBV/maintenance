@@ -59,15 +59,20 @@ function ensureStatusFile() {
 }
 
 function formatStatusSummary(status) {
-  const lines = [];
+  if (!status || typeof status !== 'object') return 'Geen statusgegevens beschikbaar.';
 
   if (status.message) {
-    lines.push(`**Paginastatus:** ${status.message}`);
+    return [
+      `**Paginastatus:** ${status.message}`,
+      `**${status.statusLabel}** — ${status.progress}%`
+    ].join('\n');
   }
 
-  lines.push(`**Statuslabel:** ${status.statusLabel}`);
-  lines.push(`**Voortgang:** ${status.progress}%`);
-  lines.push('**Stappen:**');
+  const lines = [
+    `**Statuslabel:** ${status.statusLabel}`,
+    `**Voortgang:** ${status.progress}%`,
+    '**Stappen:**'
+  ];
 
   status.steps.forEach((step, index) => {
     lines.push(`
