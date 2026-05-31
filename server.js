@@ -2,9 +2,9 @@
 // Run with: node server.js
 
 const path = require('path');
+const { fork } = require('child_process');
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const express = require('express');
-const { startBot } = require('./discord-bot');
 const app = express();
 const PORT = 1029;
 
@@ -46,10 +46,20 @@ app.post('/api/notify', async (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
-  console.log('Starting Discord bot from server.js...');
-});
+  console.log('Starting discord-bot.js as a child process...');
 
-// Start Discord bot if configured
-startBot().catch((error) => {
-  console.error('Discord bot failed to start:', error);
+  const botPath = path.resolve(__dirname, 'discord-bot.js');
+  const botProcess = fork(botPath, [], {
+    env: process.env,
+    cwd: __dirname,
+    stdio: 'inherit'
+  });
+
+  botProcess.on('error', (error) => {
+    console.error('Discord bot process error:', error);
+  });
+
+  botProcess.on('exit', (code, signal) => {
+    console.log(`Discord bot process exited with code ${code} signal ${signal}`);
+  });
 });
