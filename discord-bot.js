@@ -35,10 +35,10 @@ function loadStatus() {
     }
 
     const raw = fs.readFileSync(STATUS_FILE, 'utf8');
-    return JSON.parse(raw);
+    return mergeStatus(JSON.parse(raw));
   } catch (error) {
     console.error('Failed to load status.json:', error);
-    return DEFAULT_STATUS;
+    return mergeStatus(DEFAULT_STATUS);
   }
 }
 
@@ -50,6 +50,18 @@ function saveStatus(status) {
     console.error('Failed to save status.json:', error);
     return false;
   }
+}
+
+function mergeStatus(status) {
+  if (!status || typeof status !== 'object') {
+    return { ...DEFAULT_STATUS };
+  }
+
+  return {
+    ...DEFAULT_STATUS,
+    ...status,
+    steps: Array.isArray(status.steps) ? status.steps : DEFAULT_STATUS.steps
+  };
 }
 
 function ensureStatusFile() {
