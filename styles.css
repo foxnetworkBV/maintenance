@@ -148,6 +148,21 @@ body::after {
   margin-bottom: 10px;
 }
 
+.status-summary {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.status-summary-text {
+  display: block;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
 .status-steps {
   display: grid;
   gap: 10px;

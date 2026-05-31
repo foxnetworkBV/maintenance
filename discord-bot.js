@@ -25,6 +25,8 @@ const COMMANDS = [
     .addStringOption((option) => option.setName('tekst').setDescription('Nieuwe labeltekst').setRequired(true)),
   new SlashCommandBuilder().setName('botstatus').setDescription('Stel de Discord botstatus in.')
     .addStringOption((option) => option.setName('tekst').setDescription('Nieuwe botstatus').setRequired(true)),
+  new SlashCommandBuilder().setName('summary').setDescription('Stel de pagina-statusregel in.')
+    .addStringOption((option) => option.setName('tekst').setDescription('Nieuwe statusregel').setRequired(true)),
   new SlashCommandBuilder().setName('show').setDescription('Toon de huidige status.'),
   new SlashCommandBuilder().setName('reset').setDescription('Herstel de standaardstatus.')
 ];
@@ -32,6 +34,7 @@ const COMMANDS = [
 const DEFAULT_STATUS = {
   statusLabel: 'Ontwikkelingsstatus',
   progress: 75,
+  message: 'Onderhoud bezig — we zijn bijna terug met nieuwe updates.',
   steps: [
     { label: 'Planning & voorbereiding', state: 'complete', detail: 'Voltooid' },
     { label: 'Codeontwikkeling & updates', state: 'current', detail: 'Bezig' },
@@ -72,11 +75,15 @@ function ensureStatusFile() {
 }
 
 function formatStatusSummary(status) {
-  const lines = [
-    `**Statuslabel:** ${status.statusLabel}`,
-    `**Voortgang:** ${status.progress}%`,
-    '**Stappen:**'
-  ];
+  const lines = [];
+
+  if (status.message) {
+    lines.push(`**Paginastatus:** ${status.message}`);
+  }
+
+  lines.push(`**Statuslabel:** ${status.statusLabel}`);
+  lines.push(`**Voortgang:** ${status.progress}%`);
+  lines.push('**Stappen:**');
 
   status.steps.forEach((step, index) => {
     lines.push(`
@@ -166,6 +173,7 @@ async function startBot() {
             '/step <nummer> <complete|current|pending> [detail] — update een stap\n' +
             '/label <tekst> — wijzig het statuslabel\n' +
             '/botstatus <tekst> — wijzig de botstatus\n' +
+            '/summary <tekst> — wijzig de paginastatus\n' +
             '/show — toon huidige status\n' +
             '/reset — herstel standaardstatus'
           );
@@ -206,6 +214,14 @@ async function startBot() {
           const statusText = interaction.options.getString('tekst');
           await setBotStatus(interaction.client, statusText);
           await interaction.reply(`Botstatus bijgewerkt naar: ${statusText}`);
+          break;
+        }
+
+        case 'summary': {
+          const statusText = interaction.options.getString('tekst');
+          status.message = statusText;
+          saveStatus(status);
+          await interaction.reply(`Paginastatus bijgewerkt naar: ${statusText}`);
           break;
         }
 
@@ -256,6 +272,7 @@ async function startBot() {
           '`!step <nummer> <complete|current|pending> [detail]` — update een stap\n' +
           '`!label <tekst>` — wijzig de statuslabel\n' +
           '`!botstatus <tekst>` — wijzig de botstatus\n' +
+          '`!summary <tekst>` — wijzig de paginastatus\n' +
           '`!show` — toon huidige status\n' +
           '`!reset` — herstel standaardstatus'
         );
@@ -324,6 +341,19 @@ async function startBot() {
 
         await setBotStatus(message.client, statusText);
         await message.reply(`Botstatus bijgewerkt naar: ${statusText}`);
+        break;
+      }
+
+      case 'summary': {
+        const statusText = args.join(' ').trim();
+        if (!statusText) {
+          await message.reply('Gebruik: `!summary <tekst>` om de pagina-status bij te werken.');
+          return;
+        }
+
+        status.message = statusText;
+        saveStatus(status);
+        await message.reply(`Paginastatus bijgewerkt naar: ${statusText}`);
         break;
       }
 

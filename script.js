@@ -4,32 +4,20 @@
 // Utility Functions
 const pad = (n) => String(n).padStart(2, '0');
 
-function renderStatusSteps(steps) {
-  const container = document.getElementById('statusSteps');
-  if (!container) return;
+function renderStatusSummary(steps) {
+  const container = document.getElementById('statusSummary');
+  if (!container || !Array.isArray(steps)) return;
 
-  container.innerHTML = '';
-
-  steps.forEach((step) => {
-    const stepEl = document.createElement('div');
-    stepEl.className = `status-step status-${step.state || 'pending'}`;
-
-    const label = document.createElement('span');
-    label.className = 'step-label';
-    label.textContent = step.label || 'Onbekende stap';
-
-    const status = document.createElement('span');
-    status.className = 'step-status';
-    status.textContent = step.detail || (
+  const text = steps.map((step) => {
+    const detail = step.detail || (
       step.state === 'complete' ? 'Voltooid' :
       step.state === 'current' ? 'Bezig' :
       'Komt eraan'
     );
+    return `${step.label}: ${detail}`;
+  }).join(' · ');
 
-    stepEl.appendChild(label);
-    stepEl.appendChild(status);
-    container.appendChild(stepEl);
-  });
+  container.innerHTML = `<span class="status-summary-text">${text}</span>`;
 }
 
 function updateStatus(status) {
@@ -51,8 +39,16 @@ function updateStatus(status) {
     progressBar.style.width = `${status.progress}%`;
   }
 
+  if (status.message) {
+    const container = document.getElementById('statusSummary');
+    if (container) {
+      container.innerHTML = `<span class="status-summary-text">${status.message}</span>`;
+    }
+    return;
+  }
+
   if (Array.isArray(status.steps)) {
-    renderStatusSteps(status.steps);
+    renderStatusSummary(status.steps);
   }
 }
 
