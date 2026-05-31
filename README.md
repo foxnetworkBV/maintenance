@@ -23,6 +23,35 @@ A secure maintenance page with email notifications sent to Discord.
    npm start
    ```
 
+## Discord Bot (Optional)
+
+1. Create a Discord bot application and copy its token.
+2. Set the `DISCORD_BOT_TOKEN` environment variable:
+
+   - macOS / Linux:
+     ```bash
+     export DISCORD_BOT_TOKEN="your_token"
+     ```
+   - Windows PowerShell:
+     ```powershell
+     $env:DISCORD_BOT_TOKEN="your_token"
+     ```
+
+3. Run the bot:
+   ```bash
+   npm run start-bot
+   ```
+
+4. Use these commands in a server where the bot is present. You must have `Manage Server` permissions:
+
+   - `!status 75` — update progress percentage
+   - `!step 2 current Bezig` — set step 2 as current with a detail message
+   - `!label Ontwikkelingsstatus` — change the status label
+   - `!show` — display the current site status
+   - `!reset` — restore the default statuses
+
+The webpage loads status data from `status.json` automatically.
+
 ## Files
 
 - `index.html` - Main page (safe to share)

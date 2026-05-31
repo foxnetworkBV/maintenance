@@ -1,0 +1,26 @@
+{
+  "statusLabel": "Ontwikkelingsstatus",
+  "progress": 75,
+  "steps": [
+    {
+      "label": "Planning & voorbereiding",
+      "state": "complete",
+      "detail": "Voltooid"
+    },
+    {
+      "label": "Codeontwikkeling & updates",
+      "state": "current",
+      "detail": "Bezig"
+    },
+    {
+      "label": "Testen & kwaliteitscontrole",
+      "state": "pending",
+      "detail": "Komt eraan"
+    },
+    {
+      "label": "Live zetten",
+      "state": "pending",
+      "detail": "Bijna klaar"
+    }
+  ]
+}

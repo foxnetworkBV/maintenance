@@ -4,6 +4,71 @@
 // Utility Functions
 const pad = (n) => String(n).padStart(2, '0');
 
+function renderStatusSteps(steps) {
+  const container = document.getElementById('statusSteps');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  steps.forEach((step) => {
+    const stepEl = document.createElement('div');
+    stepEl.className = `status-step status-${step.state || 'pending'}`;
+
+    const label = document.createElement('span');
+    label.className = 'step-label';
+    label.textContent = step.label || 'Onbekende stap';
+
+    const status = document.createElement('span');
+    status.className = 'step-status';
+    status.textContent = step.detail || (
+      step.state === 'complete' ? 'Voltooid' :
+      step.state === 'current' ? 'Bezig' :
+      'Komt eraan'
+    );
+
+    stepEl.appendChild(label);
+    stepEl.appendChild(status);
+    container.appendChild(stepEl);
+  });
+}
+
+function updateStatus(status) {
+  if (!status || typeof status !== 'object') return;
+
+  const labelEl = document.querySelector('.status-label');
+  const percentageEl = document.querySelector('.status-percentage');
+  const progressBar = document.querySelector('.progress-bar-inner');
+
+  if (labelEl && status.statusLabel) {
+    labelEl.textContent = status.statusLabel;
+  }
+
+  if (percentageEl && typeof status.progress === 'number') {
+    percentageEl.textContent = `${status.progress}%`;
+  }
+
+  if (progressBar && typeof status.progress === 'number') {
+    progressBar.style.width = `${status.progress}%`;
+  }
+
+  if (Array.isArray(status.steps)) {
+    renderStatusSteps(status.steps);
+  }
+}
+
+async function loadStatus() {
+  if (!CONFIG?.statusEndpoint) return;
+
+  try {
+    const response = await fetch(CONFIG.statusEndpoint, { cache: 'no-store' });
+    if (!response.ok) return;
+    const status = await response.json();
+    updateStatus(status);
+  } catch (err) {
+    console.warn('Could not load status.json:', err);
+  }
+}
+
 // Countdown Timer
 function updateCountdown() {
   const now = new Date();
@@ -73,6 +138,9 @@ function init() {
   // Start countdown
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  // Load dynamic status from status.json
+  loadStatus();
 
   // Setup email form handler
   const notifyForm = document.getElementById('notifyForm');

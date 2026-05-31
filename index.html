@@ -36,11 +36,30 @@
         
         <div class="status-bar">
           <div class="status-info">
-            <span class="status-label">Onderhoud voortgang</span>
+            <span class="status-label">Ontwikkelingsstatus</span>
             <span class="status-percentage">75%</span>
           </div>
           <div class="progress-bar-outer">
             <div class="progress-bar-inner" style="width: 75%"></div>
+          </div>
+
+          <div id="statusSteps" class="status-steps">
+            <div class="status-step status-complete">
+              <span class="step-label">Planning & voorbereiding</span>
+              <span class="step-status">Voltooid</span>
+            </div>
+            <div class="status-step status-current">
+              <span class="step-label">Codeontwikkeling & updates</span>
+              <span class="step-status">Bezig</span>
+            </div>
+            <div class="status-step status-pending">
+              <span class="step-label">Testen & kwaliteitscontrole</span>
+              <span class="step-status">Komt eraan</span>
+            </div>
+            <div class="status-step status-pending">
+              <span class="step-label">Live zetten</span>
+              <span class="step-status">Bijna klaar</span>
+            </div>
           </div>
         </div>
         
@@ -123,11 +142,9 @@
       </form>
       <div id="notifyHelp" class="muted" style="margin-top:8px">Wil je als eerste weten wanneer we terug zijn? Voer je e-mailadres in: een snelle melding, geen spam.</div>
 
-      <!--<div style="margin-top:18px; display:flex; gap:10px; align-items:center">
-        <a href="#" aria-label="Twitter link" class="muted">Twitter</a>
-        <a href="#" aria-label="Status link" class="muted">Status</a>
-        <a href="#" aria-label="Contact link" class="muted">Contact</a>
-      </div>-->
+      <div class="social-links">
+        <a href="https://discord.gg/j2yFsV5ZVC" target="_blank" rel="noreferrer noopener" aria-label="Join our Discord" class="social-link">Discord</a>
+      </div>
 
       <div style="margin-top:24px; display:flex; justify-content:center" class="illustration" aria-hidden="true">
         <svg class="gear" viewBox="0 0 120 120" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
