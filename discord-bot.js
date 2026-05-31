@@ -10,25 +10,9 @@ const GUILD_ID = process.env.DISCORD_GUILD_ID;
 
 const COMMANDS = [
   new SlashCommandBuilder().setName('help').setDescription('Toon beschikbare statuscommando\'s.'),
-  new SlashCommandBuilder().setName('status').setDescription('Update voortgangpercentage.')
-    .addIntegerOption((option) => option.setName('percentage').setDescription('Voortgang 0-100').setRequired(true)),
-  new SlashCommandBuilder().setName('step').setDescription('Update een statusstap.')
-    .addIntegerOption((option) => option.setName('nummer').setDescription('Stapnummer').setRequired(true))
-    .addStringOption((option) => option.setName('state').setDescription('complete, current of pending').setRequired(true)
-      .addChoices(
-        { name: 'complete', value: 'complete' },
-        { name: 'current', value: 'current' },
-        { name: 'pending', value: 'pending' }
-      ))
-    .addStringOption((option) => option.setName('detail').setDescription('Extra statusdetail').setRequired(false)),
-  new SlashCommandBuilder().setName('label').setDescription('Wijzig het statuslabel.')
-    .addStringOption((option) => option.setName('tekst').setDescription('Nieuwe labeltekst').setRequired(true)),
-  new SlashCommandBuilder().setName('botstatus').setDescription('Stel de Discord botstatus in.')
-    .addStringOption((option) => option.setName('tekst').setDescription('Nieuwe botstatus').setRequired(true)),
   new SlashCommandBuilder().setName('summary').setDescription('Stel de pagina-statusregel in.')
     .addStringOption((option) => option.setName('tekst').setDescription('Nieuwe statusregel').setRequired(true)),
-  new SlashCommandBuilder().setName('show').setDescription('Toon de huidige status.'),
-  new SlashCommandBuilder().setName('reset').setDescription('Herstel de standaardstatus.')
+  new SlashCommandBuilder().setName('show').setDescription('Toon de huidige status.')
 ];
 
 const DEFAULT_STATUS = {
@@ -169,53 +153,10 @@ async function startBot() {
         case 'help':
           await interaction.reply(
             'Beschikbare commando\'s:\n' +
-            '/status <percentage> — update voortgang\n' +
-            '/step <nummer> <complete|current|pending> [detail] — update een stap\n' +
-            '/label <tekst> — wijzig het statuslabel\n' +
-            '/botstatus <tekst> — wijzig de botstatus\n' +
-            '/summary <tekst> — wijzig de paginastatus\n' +
-            '/show — toon huidige status\n' +
-            '/reset — herstel standaardstatus'
+            '/summary <tekst> — wijzig de pagina-status\n' +
+            '/show — toon huidige status'
           );
           break;
-
-        case 'status': {
-          const percentage = interaction.options.getInteger('percentage');
-          status.progress = Math.round(percentage);
-          saveStatus(status);
-          await interaction.reply(`Voortgang bijgewerkt naar ${status.progress}%`);
-          break;
-        }
-
-        case 'step': {
-          const stepIndex = interaction.options.getInteger('nummer') - 1;
-          const state = interaction.options.getString('state');
-          const detail = interaction.options.getString('detail') || '';
-
-          status.steps[stepIndex].state = state;
-          if (detail) {
-            status.steps[stepIndex].detail = detail;
-          }
-
-          saveStatus(status);
-          await interaction.reply('Stap ' + (stepIndex + 1) + ' bijgewerkt naar `' + state + '`' + (detail ? ` met detail: ${detail}` : ''));
-          break;
-        }
-
-        case 'label': {
-          const label = interaction.options.getString('tekst');
-          status.statusLabel = label;
-          saveStatus(status);
-          await interaction.reply(`Statuslabel bijgewerkt naar: ${label}`);
-          break;
-        }
-
-        case 'botstatus': {
-          const statusText = interaction.options.getString('tekst');
-          await setBotStatus(interaction.client, statusText);
-          await interaction.reply(`Botstatus bijgewerkt naar: ${statusText}`);
-          break;
-        }
 
         case 'summary': {
           const statusText = interaction.options.getString('tekst');
@@ -228,12 +169,6 @@ async function startBot() {
         case 'show': {
           const reply = formatStatusSummary(status);
           await interaction.reply(reply);
-          break;
-        }
-
-        case 'reset': {
-          saveStatus(DEFAULT_STATUS);
-          await interaction.reply('Status teruggezet naar het standaardgegevens.');
           break;
         }
 
@@ -268,81 +203,10 @@ async function startBot() {
       case 'help':
         await message.reply(
           'Beschikbare commando\'s:\n' +
-          '`!status <percentage>` — update voortgang\n' +
-          '`!step <nummer> <complete|current|pending> [detail]` — update een stap\n' +
-          '`!label <tekst>` — wijzig de statuslabel\n' +
-          '`!botstatus <tekst>` — wijzig de botstatus\n' +
-          '`!summary <tekst>` — wijzig de paginastatus\n' +
-          '`!show` — toon huidige status\n' +
-          '`!reset` — herstel standaardstatus'
+          '`!summary <tekst>` — wijzig de pagina-status\n' +
+          '`!show` — toon huidige status'
         );
         break;
-
-      case 'status': {
-        const percentage = Number(args[0]);
-        if (Number.isNaN(percentage) || percentage < 0 || percentage > 100) {
-          await message.reply('Gebruik: `!status <percentage>` met een waarde tussen 0 en 100.');
-          return;
-        }
-
-        status.progress = Math.round(percentage);
-        saveStatus(status);
-        await message.reply(`Voortgang bijgewerkt naar ${status.progress}%`);
-        break;
-      }
-
-      case 'step': {
-        const stepIndex = Number(args[0]) - 1;
-        const state = args[1]?.toLowerCase();
-        const detail = args.slice(2).join(' ');
-
-        if (!Number.isInteger(stepIndex) || stepIndex < 0 || stepIndex >= status.steps.length) {
-          await message.reply('Gebruik: `!step <nummer> <complete|current|pending> [detail]` en kies een geldig stapnummer.');
-          return;
-        }
-
-        if (!['complete', 'current', 'pending'].includes(state)) {
-          await message.reply('Stapstatus moet `complete`, `current` of `pending` zijn.');
-          return;
-        }
-
-        status.steps[stepIndex].state = state;
-        if (detail) {
-          status.steps[stepIndex].detail = detail;
-        }
-
-        saveStatus(status);
-        await message.reply(
-          'Stap ' + (stepIndex + 1) + ' bijgewerkt naar `' + state + '`' +
-          (detail ? ` met detail: ${detail}` : '')
-        );
-        break;
-      }
-
-      case 'label': {
-        const label = args.join(' ').trim();
-        if (!label) {
-          await message.reply('Gebruik: `!label <tekst>` om het statuslabel bij te werken.');
-          return;
-        }
-
-        status.statusLabel = label;
-        saveStatus(status);
-        await message.reply(`Statuslabel bijgewerkt naar: ${label}`);
-        break;
-      }
-
-      case 'botstatus': {
-        const statusText = args.join(' ').trim();
-        if (!statusText) {
-          await message.reply('Gebruik: `!botstatus <tekst>` om de botstatus bij te werken.');
-          return;
-        }
-
-        await setBotStatus(message.client, statusText);
-        await message.reply(`Botstatus bijgewerkt naar: ${statusText}`);
-        break;
-      }
 
       case 'summary': {
         const statusText = args.join(' ').trim();
@@ -360,12 +224,6 @@ async function startBot() {
       case 'show': {
         const reply = formatStatusSummary(status);
         await message.reply(reply);
-        break;
-      }
-
-      case 'reset': {
-        saveStatus(DEFAULT_STATUS);
-        await message.reply('Status teruggezet naar het standaardgegevens.');
         break;
       }
 
