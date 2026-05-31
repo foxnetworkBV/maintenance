@@ -23,6 +23,8 @@ A secure maintenance page with email notifications sent to Discord.
    npm start
    ```
 
+> `npm start` now runs `server.js` and will also start the Discord bot if `DISCORD_BOT_TOKEN` is set.
+
 ## Discord Bot (Optional)
 
 1. Create a Discord bot application and copy its token.

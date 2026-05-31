@@ -3,6 +3,7 @@
 
 const express = require('express');
 const path = require('path');
+const { startBot } = require('./discord-bot');
 const app = express();
 const PORT = 1029;
 
@@ -44,4 +45,9 @@ app.post('/api/notify', async (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
+});
+
+// Start Discord bot if configured
+startBot().catch((error) => {
+  console.error('Discord bot failed to start:', error);
 });
